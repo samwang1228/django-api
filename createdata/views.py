@@ -12,7 +12,7 @@ from rest_framework import status
 
 import json
 
-from .models import Post
+from .models import Post, Room, Room_detail, User_login
 from .models import User
 # Create your views here.
 
@@ -34,19 +34,53 @@ class Add_user(APIView):
         get_id = request.GET.get('user_id','')
         get_nickname = request.GET.get('nickname','')
         get_password = request.GET.get('password','')
-        new_user = User()
+        get_login_check=request.GET.get('login_check','')
+        new_user = User_login()
         new_user.user_id = get_id
         new_user.nickname = get_nickname
         new_user.password = get_password
+        new_user.login_check=get_login_check
         new_user.save()
         if get_id:
             return JsonResponse({'data': get_id + ' insert!'},status=status.HTTP_200_OK)
         else:
             return JsonResponse({'res':'parameter : name is None'},status=status.HTTP_400_BAD_REQUEST)
-class Delete_user(APIView):
+
+class Add_Room(APIView):
+    def get(self,request):
+        get_id = request.GET.get('room_id','')
+        get_title = request.GET.get('title','')
+        new_user = Room()
+        new_user.room_id = get_id
+        new_user.room_title =get_title 
+        new_user.save()
+        if get_id:
+            return JsonResponse({'data': get_id + '  房間以新增!'},status=status.HTTP_200_OK)
+        else:
+            return JsonResponse({'res':'parameter : name is None'},status=status.HTTP_400_BAD_REQUEST)
+class Add_Room_detail(APIView):
     def get(self,request):
         get_id = request.GET.get('user_id','')
-        user = User.objects.filter(user_id=get_id)
+        get_nickname = request.GET.get('nickname','')
+        get_content = request.GET.get('content','')
+        get_room_title=request.GET.get('room_title','')
+        get_room_id=request.GET.get('room_id','')
+        new_room = Room_detail()
+        new_room.user_id = get_id
+        new_room.nickname = get_nickname
+        new_room.cotent = get_content
+        new_room.room_title=get_room_title
+        new_room.room_id=get_room_id
+        new_room.save()
+        if get_id:
+            return JsonResponse({'data': get_id + ' 留言已新增!'},status=status.HTTP_200_OK)
+        else:
+            return JsonResponse({'res':'parameter : name is None'},status=status.HTTP_400_BAD_REQUEST)
+
+class Delete_user(APIView):
+    def get(self,request):
+        get_id = request.GET.get('id','')
+        user = User_login.objects.filter(id=get_id)
         user.delete()
         if get_id:
             return JsonResponse({'data':get_id + ' delete!'},status=status.HTTP_200_OK)
@@ -54,13 +88,14 @@ class Delete_user(APIView):
             return JsonResponse({'res':'parameter : name is None'},status=status.HTTP_400_BAD_REQUEST)      
 class Update_user(APIView):
     def get(self,request):
-        get_id = request.GET.get('user_id','')
+        # get_id = request.GET.get('id','')
+        get_userid=request.GET.get('user_id','')
         get_nickname = request.GET.get('nickname','')
         get_password = request.GET.get('password','')
-        update_user = User.objects.filter(user_id=get_id)
+        update_user = User_login.objects.filter(user_id=get_userid)
         update_user.update(nickname=get_nickname,password=get_password)
-        if get_id:
-            return JsonResponse({'data':get_id + ' update!'},status=status.HTTP_200_OK)
+        if get_userid:
+            return JsonResponse({'data':get_userid + ' update!'},status=status.HTTP_200_OK)
         else:
             return JsonResponse({'res':'parameter : name is None'},status=status.HTTP_400_BAD_REQUEST) 
 
@@ -84,8 +119,23 @@ class List_post(APIView):
         )
 class List_User(APIView):
     def get(self,request):
-        user = User.objects.all().values()
+        user = User_login.objects.all().values()
         return JsonResponse(
             {'data':list(user)},
             status=status.HTTP_200_OK
         )
+class List_Room_detail(APIView):
+    def get (self,request):
+        room = Room_detail.objects.all().values()
+        return JsonResponse(
+         list(room),safe=False   
+        )
+
+class List_Room(APIView):
+    def get (self,request):
+        index =request.GET.get('index',None)
+        if index:
+            room=Room.objects.filter(id=index).values()
+        else:
+            room=Room.objects.all().values()
+        return JsonResponse(list(room),safe=False)
