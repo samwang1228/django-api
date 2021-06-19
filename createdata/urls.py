@@ -11,7 +11,10 @@ urlpatterns = [
     path('room_content',views.List_Room_detail.as_view(),name='room_content'),
     path('room_title',views.List_Room.as_view(),name='room_title'),
     path('add_room_detail',views.Add_Room_detail.as_view(),name='room_title'),
-    path('add_room_title',views.Add_Room.as_view(),name='room_title')
+    path('add_room_title',views.Add_Room.as_view(),name='room_title'),
+    path('test' ,views.Test.as_view(),name='test'),
+    path('add_test',views.Add_test.as_view() ,name='t'),
+    path('login',views.Login.as_view(),name='login')
     # path('list_user',views.List_user.as_view(),name='list_user'),
     # path('',views.HelloAPIViewDecorator,name='index'),
 ]
