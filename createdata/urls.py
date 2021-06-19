@@ -1,3 +1,4 @@
+# from createdata.models import Numbers
 from django.urls import path
 from . import views
 
@@ -15,8 +16,8 @@ urlpatterns = [
     path('test' ,views.Test.as_view(),name='test'),
     path('add_test',views.Add_test.as_view() ,name='t'),
     path('login',views.Login.as_view(),name='login'),
-    path('numbers',views.Numbers_room.as_view(),name='numbers'),
-    path('addnumbers',views.Numbers_room.as_view(),name='addnumbers')
+    path('numbers',views.List_Numbers.as_view(),name='numbers'),
+    path('addnumbers',views.Addnumbers.as_view(),name='addnumbers')
     # path('list_user',views.List_user.as_view(),name='list_user'),
     # path('',views.HelloAPIViewDecorator,name='index'),
 ]

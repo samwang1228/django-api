@@ -162,7 +162,7 @@ class List_Room_detail(APIView):
         return JsonResponse(
          list(room),safe=False   
         )
-class Numbers(APIView):
+class List_Numbers(APIView):
     def get(self,request):
         numbers=Numbers_room.objects.all().values()
         return JsonResponse(
