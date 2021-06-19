@@ -14,7 +14,7 @@ from rest_framework import status
 
 import json
 
-from .models import Entry, Food, Numbers, Post, Restaurant, Room, Room_detail, User_login
+from .models import Entry, Food, Numbers, Numbers_room, Post, Restaurant, Room, Room_detail, User_login
 from .models import User
 # Create your views here.
 
@@ -60,6 +60,22 @@ class Add_Room(APIView): #新增房間
             return JsonResponse({'data': get_id + '  房間以新增!'},status=status.HTTP_200_OK)
         else:
             return JsonResponse({'res':'parameter : name is None'},status=status.HTTP_400_BAD_REQUEST)
+            
+class Addnumbers(APIView): #新增右側人數
+    def get(self,request):
+        get_user_id = request.GET.get('user_id','')
+        get_room_id = request.GET.get('room_id','')
+        get_name=request.GET.get('nickname','')
+        new_user = Numbers_room()
+        new_user.user_id = get_user_id
+        new_user.room_id = get_room_id
+        new_user.nickname = get_name 
+        new_user.save()
+        if get_user_id:
+            return JsonResponse({'ID': get_user_id + '  人員以新增!'},status=status.HTTP_200_OK)
+        else:
+            return JsonResponse({'res':'parameter : name is None'},status=status.HTTP_400_BAD_REQUEST)
+# class Add_Room_detail(APIView): #新增留言 /add_room_detail
 class Add_Room_detail(APIView): #新增留言 /add_room_detail
     def get(self,request):
         get_id = request.GET.get('user_id','')
@@ -146,7 +162,12 @@ class List_Room_detail(APIView):
         return JsonResponse(
          list(room),safe=False   
         )
-
+class Numbers(APIView):
+    def get(self,request):
+        numbers=Numbers_room.objects.all().values()
+        return JsonResponse(
+            list(numbers),safe=False
+        )
 class List_Room(APIView):
     def get (self,request):
         index =request.GET.get('index',None)
