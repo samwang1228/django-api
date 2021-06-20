@@ -17,7 +17,9 @@ urlpatterns = [
     path('add_test',views.Add_test.as_view() ,name='t'),
     path('login',views.Login.as_view(),name='login'),
     path('numbers',views.List_Numbers.as_view(),name='numbers'),
-    path('addnumbers',views.Addnumbers.as_view(),name='addnumbers')
+    path('addnumbers',views.Addnumbers.as_view(),name='addnumbers'),
+    path('delete_room_detail',views.Delete_Room_detail.as_view(),name='room'),
+    path('delete_numbers',views.Delete_Numbers.as_view(),name='n'),
     # path('list_user',views.List_user.as_view(),name='list_user'),
     # path('',views.HelloAPIViewDecorator,name='index'),
 ]

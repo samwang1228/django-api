@@ -97,13 +97,33 @@ class Add_Room_detail(APIView): #新增留言 /add_room_detail
 
 class Delete_user(APIView): #刪除USER /deleteuser
     def get(self,request):
-        get_id = request.GET.get('id','')
-        user = User_login.objects.filter(id=get_id)
+        get_id = request.GET.get('user_id','')
+        user = User_login.objects.filter(user_id=get_id)
         user.delete()
         if get_id:
             return JsonResponse({'user ID:':get_id + ' delete!'},status=status.HTTP_200_OK)
         else:
-            return JsonResponse({'res':'parameter : name is None'},status=status.HTTP_400_BAD_REQUEST)      
+            return JsonResponse({'res':'parameter : name is None'},status=status.HTTP_400_BAD_REQUEST)     
+
+class Delete_Room_detail(APIView):
+    def get (self,request):
+        get_id=request.GET.get('user_id','')
+        comment=Room_detail.objects.filter(user_id=get_id)
+        comment.delete()
+        if comment.delete():
+            return JsonResponse({'user ID:':get_id + ' 的留言已刪除!'},status=status.HTTP_200_OK)
+        else:
+            return JsonResponse({'res':'parameter : name is None'},status=status.HTTP_400_BAD_REQUEST)
+
+class Delete_Numbers(APIView):
+    def get (self,request):
+        get_id=request.GET.get('user_id','')
+        comment=Numbers_room.objects.filter(user_id=get_id)
+        comment.delete()
+        if comment.delete():
+            return JsonResponse({'user ID:':get_id + ' 以踢出房間'},status=status.HTTP_200_OK)
+        else:
+            return JsonResponse({'res':'parameter : name is None'},status=status.HTTP_400_BAD_REQUEST)     
 class Update_user(APIView): #更改帳密 or nickname/updateuser 
     def get(self,request):
         # get_id = request.GET.get('id','')
