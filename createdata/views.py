@@ -114,7 +114,16 @@ class Delete_Room_detail(APIView):
             return JsonResponse({'user ID:':get_id + ' 的留言已刪除!'},status=status.HTTP_200_OK)
         else:
             return JsonResponse({'res':'parameter : name is None'},status=status.HTTP_400_BAD_REQUEST)
-
+class Delete_Room_commet(APIView):
+    def get (self,request):
+        get_id=request.GET.get('user_id','')
+        get_content=request.GET.get('content','')
+        comment=Room_detail.objects.filter(user_id=get_id,cotent=get_content)
+        comment.delete()
+        if comment.delete():
+            return JsonResponse({'user ID:':get_id+' 的 '+get_content + ' 留言已刪除!'},status=status.HTTP_200_OK)
+        else:
+            return JsonResponse({'res':'parameter : name is None'},status=status.HTTP_400_BAD_REQUEST)
 class Delete_Numbers(APIView):
     def get (self,request):
         get_id=request.GET.get('user_id','')
