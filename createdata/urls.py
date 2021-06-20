@@ -21,6 +21,7 @@ urlpatterns = [
     path('delete_room_detail',views.Delete_Room_detail.as_view(),name='room'),
     path('delete_numbers',views.Delete_Numbers.as_view(),name='n'),
     path('delete_single_comment',views.Delete_Room_commet.as_view(),name='p'),
+    path('updateroom',views.Room_update.as_view(),name='p'),
     # path('list_user',views.List_user.as_view(),name='list_user'),
     # path('',views.HelloAPIViewDecorator,name='index'),
 ]

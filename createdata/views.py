@@ -145,7 +145,8 @@ class Update_user(APIView): #更改帳密 or nickname/updateuser
         if get_userid:
             return JsonResponse({'user ID':get_userid + ' update!'},status=status.HTTP_200_OK)
         else:
-            return JsonResponse({'res':'parameter : name is None'},status=status.HTTP_400_BAD_REQUEST) 
+            return JsonResponse({'res':'parameter : name is None'},status=status.HTTP_400_BAD_REQUEST)
+
 class Login(APIView): #更改登入狀態/login
     def get(self,request):
         get_userid=request.GET.get('user_id','')
@@ -153,11 +154,37 @@ class Login(APIView): #更改登入狀態/login
         login_check=request.GET.get('login_check','')
         update_user = User_login.objects.filter(user_id=get_userid,password=get_password)
         update_user.update(login_check=login_check)
+        for e in User_login.objects.all():
+            if(e.user_id==get_userid):
+                nickname=e.nickname
+        for i in User_login.objects.all():
+            if(i.user_id==get_userid):
+                id=i.id
         if update_user:
             if login_check==False:
                 return JsonResponse({'User':get_userid + ' 已成功登出'},status=status.HTTP_200_OK)
             else: 
-                return JsonResponse({'User':get_userid + ' 已成功登入'},status=status.HTTP_200_OK)
+                return JsonResponse({'id':id ,'User':get_userid + '已成功登入','nickname':nickname},status=status.HTTP_200_OK)
+        else:
+            return JsonResponse({'res':'parameter : name is None'},status=status.HTTP_400_BAD_REQUEST)
+
+class Room_update(APIView): #更改登入狀態/login
+    def get(self,request):
+        room_id=request.GET.get('room_id','')
+        room_title=request.GET.get('title','')
+        update_user = Room.objects.filter(room_id=room_id)
+        update_user.update(room_title=room_title)
+        title=Room.objects.get(room_id=room_id)
+        for e in Room.objects.all():
+            if(e.room_id==room_id):
+                title=e.room_title
+        print(title)
+        # nickname=User.objects.get(user_id=get_userid)
+        if update_user:
+            if update_user==False:
+                return JsonResponse({'User':room_id + ' 已成功登出'},status=status.HTTP_200_OK)
+            else: 
+                return JsonResponse(title,safe=False)
         else:
             return JsonResponse({'res':'parameter : name is None'},status=status.HTTP_400_BAD_REQUEST)
 class List_post(APIView):

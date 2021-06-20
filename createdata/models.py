@@ -17,7 +17,7 @@ class User_login(models.Model): #登入與註冊
     user_id=models.CharField(max_length=45)
     password =models.CharField(max_length=20)
     nickname = models.CharField(max_length=50)
-    login_check=BooleanField(default=False)
+    login_check=BooleanField(default=False) 
 
 class Room_detail(models.Model): #留言
     user_id=models.CharField(max_length=45)
@@ -30,6 +30,9 @@ class Room_detail(models.Model): #留言
 class Room(models.Model):
     room_title=models.CharField(max_length=45)
     room_id=models.CharField(max_length=50)
+    def __str__(self):
+        return self.room_title
+
 
 class Numbers_room(models.Model): #右側伺服器人員
     nickname = models.CharField(max_length=50)
